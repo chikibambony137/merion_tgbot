@@ -22,6 +22,18 @@ def send_random_joke(message: types.Message):
     """
     bot.send_message(message.chat.id, random.choice(j.jokes))
 
+@bot.message_handler(commands=['cat'])
+def send_cat_on_watermelon(message: types.Message):
+    """Send image with cat on watermelon
+    """
+    bot.send_photo(chat_id=message.chat.id, photo=config.image)
+
+@bot.message_handler(commands=['cat_file'])
+def send_doc_cat_on_watermelon(message: types.Message):
+    """Send document with cat on watermelon
+    """
+    bot.send_document(chat_id=message.chat.id, document=config.image)
+
 @bot.message_handler() # other message or command
 def echo_message(message: types.Message):
     """Communicate with user. With unknown command or message send echo-message
