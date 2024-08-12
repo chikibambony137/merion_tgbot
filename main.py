@@ -1,6 +1,7 @@
 from telebot import TeleBot, types
 import config, messages, jokes as j
 import random
+from io import StringIO
 
 bot = TeleBot(config.token) # creating new object "bot" of class "Telebot" with argument token from BotFather
 
@@ -33,6 +34,19 @@ def send_doc_cat_on_watermelon(message: types.Message):
     """Send document with cat on watermelon
     """
     bot.send_document(chat_id=message.chat.id, document=config.image)
+
+@bot.message_handler(commands=['me'])
+def send_user_info(message: types.Message):
+    """Send users info in txt file
+    """
+    file = StringIO(str(message.from_user)) # writing info from users message to txt file
+    file.seek(0) # перенос строки в начало, чтобы потом дописывать файл (конкретно здесь пока нахуй не нада)
+    file = types.InputFile(file) # type to send file in telegram
+
+    bot.send_document(chat_id=message.chat.id, 
+                      document=file, 
+                      visible_file_name='your-info.txt',
+                      caption=messages.caption_user_info)
 
 @bot.message_handler() # other message or command
 def echo_message(message: types.Message):
